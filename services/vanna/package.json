@@ -1,0 +1,25 @@
+{
+  "name": "@analytics-platform/vanna-service",
+  "version": "1.0.0",
+  "description": "Vanna AI Python service for natural language to SQL conversion",
+  "scripts": {
+    "dev": "python main.py",
+    "start": "python main.py",
+    "docker:build": "docker build -t analytics-vanna-service .",
+    "docker:run": "docker run -p 8000:8000 --env-file .env analytics-vanna-service",
+    "install-deps": "pip install -r requirements.txt"
+  },
+  "keywords": [
+    "analytics",
+    "ai",
+    "sql",
+    "fastapi",
+    "vanna",
+    "groq"
+  ],
+  "author": "Analytics Platform Team",
+  "license": "MIT",
+  "dependencies": {
+    "python": ">=3.11"
+  }
+}
