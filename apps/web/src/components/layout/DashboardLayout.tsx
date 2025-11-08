@@ -161,16 +161,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <main className="py-6">
           <div className="px-4 sm:px-6 lg:px-8">
             {currentTab === 'Dashboard' && (
-              <div>
-                {/* Dashboard content will go here */}
-                <div className="text-center py-12">
-                  <BarChart3 className="mx-auto h-12 w-12 text-gray-400" />
-                  <h3 className="mt-2 text-sm font-semibold text-gray-900">
-                    Dashboard View
-                  </h3>
-                  <p className="mt-1 text-sm text-gray-500">
-                    Analytics dashboard components will be rendered here
-                  </p>
+              <div className="space-y-8">
+                {/* Overview Cards */}
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Overview</h2>
+                  <OverviewCards />
                 </div>
               </div>
             )}
