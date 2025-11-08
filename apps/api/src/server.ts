@@ -10,6 +10,7 @@ import statsRoutes from './routes/stats';
 import invoiceRoutes from './routes/invoices';
 import trendsRoutes from './routes/trends';
 import vendorsRoutes from './routes/vendors';
+import categorySpendRoutes from './routes/category-spend';
 import chatRoutes from './routes/chat';
 
 // Load environment variables
