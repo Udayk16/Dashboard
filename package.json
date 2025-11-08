@@ -1,0 +1,35 @@
+{
+  "name": "analytics-platform",
+  "version": "0.1.0",
+  "description": "Production-grade full-stack analytics dashboard with AI-powered chat interface",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "services/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "clean": "turbo run clean",
+    "db:generate": "turbo run db:generate",
+    "db:push": "turbo run db:push",
+    "db:seed": "turbo run db:seed",
+    "db:migrate": "turbo run db:migrate",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "setup": "npm install && npm run db:generate && npm run db:seed"
+  },
+  "devDependencies": {
+    "turbo": "^1.10.14",
+    "typescript": "^5.2.2",
+    "@types/node": "^20.8.2"
+  },
+  "packageManager": "npm@10.0.0",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=10.0.0"
+  }
+}
