@@ -117,4 +117,89 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
+// GET /api/cash-outflow - Returns expected cash outflow by date range
+router.get('/cash-outflow', async (req: Request, res: Response) => {
+  try {
+    const { startDate, endDate } = req.query;
+
+    // Default to next 90 days if no dates provided
+    const now = new Date();
+    const defaultEndDate = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000); // 90 days from now
+
+    const start = startDate ? new Date(startDate as string) : now;
+    const end = endDate ? new Date(endDate as string) : defaultEndDate;
+
+    // Get upcoming payment obligations
+    const cashOutflow = await prisma.invoice.findMany({
+      where: {
+        dueDate: {
+          gte: start,
+          lte: end,
+        },
+        status: {
+          in: ['PENDING', 'OVERDUE'],
+        },
+      },
+      include: {
+        vendor: {
+          select: {
+            name: true,
+          },
+        },
+      },
+      orderBy: {
+        dueDate: 'asc',
+      },
+    });
+
+    // Group by date
+    const groupedByDate = cashOutflow.reduce((acc, invoice) => {
+      const dateStr = invoice.dueDate.toISOString().split('T')[0];
+
+      if (!acc[dateStr]) {
+        acc[dateStr] = {
+          date: dateStr,
+          amount: 0,
+          invoiceCount: 0,
+          vendors: [],
+        };
+      }
+
+      acc[dateStr].amount += Number(invoice.totalAmount);
+      acc[dateStr].invoiceCount += 1;
+
+      if (!acc[dateStr].vendors.includes(invoice.vendor.name)) {
+        acc[dateStr].vendors.push(invoice.vendor.name);
+      }
+
+      return acc;
+    }, {} as Record<string, any>);
+
+    // Convert to array and sort by date
+    const result = Object.values(groupedByDate).sort((a, b) =>
+      new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
+
+    res.json({
+      success: true,
+      data: result,
+      summary: {
+        totalAmount: result.reduce((sum, day) => sum + day.amount, 0),
+        totalInvoices: result.reduce((sum, day) => sum + day.invoiceCount, 0),
+        dateRange: {
+          startDate: start.toISOString().split('T')[0],
+          endDate: end.toISOString().split('T')[0],
+        },
+      },
+    });
+  } catch (error) {
+    console.error('❌ Error fetching cash outflow:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch cash outflow data',
+      details: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+});
+
 export default router;
