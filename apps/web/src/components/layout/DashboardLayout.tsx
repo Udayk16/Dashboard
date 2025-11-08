@@ -15,6 +15,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import OverviewCards from '@/components/dashboard/OverviewCards'
 
 interface DashboardLayoutProps {
   children?: React.ReactNode
