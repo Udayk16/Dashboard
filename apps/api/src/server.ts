@@ -58,6 +58,7 @@ app.use('/api/stats', statsRoutes);
 app.use('/api/invoices', invoiceRoutes);
 app.use('/api/invoice-trends', trendsRoutes);
 app.use('/api/vendors', vendorsRoutes);
+app.use('/api/category-spend', categorySpendRoutes);
 app.use('/api/chat-with-data', chatRoutes);
 
 // Error handling middleware
